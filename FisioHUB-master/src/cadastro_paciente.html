@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastro de Paciente</title>
+</head>
+<body>
+
+    <h1>Cadastro de Novo Paciente</h1>
+    <form action="processar_cadastro.php" method="POST">
+        <label for="nome">Nome Completo:</label>
+        <br>
+        <input type="text" id="nome" name="nome" required>
+        <br><br>
+
+        <label for="telefone">Telefone:</label>
+        <br>
+        <input type="tel" id="telefone" name="telefone">
+        <br><br>
+
+        <label for="data_nascimento">Data de Nascimento:</label>
+        <br>
+        <input type="date" id="data_nascimento" name="data_nascimento">
+        <br><br>
+
+        <label for="patologia">Patologia (se houver):</label>
+        <br>
+        <textarea id="patologia" name="patologia" rows="4" cols="50"></textarea>
+        <br><br>
+
+        <button type="submit">Cadastrar Paciente</button>
+    </form>
+
+</body>
+</html>

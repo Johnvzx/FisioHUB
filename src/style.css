@@ -1,0 +1,253 @@
+/* Configurações básicas */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+/* --- Cabeçalho e Navegação --- */
+.main-header {
+    padding: 1rem 2rem;
+    display: flex; /* Habilita o Flexbox */
+    justify-content: center; /* Empurra a logo para a esquerda e o nav para a direita */
+    align-items: center; /* Alinha os itens verticalmente */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    background: #04224D;
+    background-color: linear-gradient(90deg,rgba(4, 34, 77, 1) 0%, rgba(123, 124, 125, 1) 100%);
+}
+
+.main-nav ul {
+    list-style: none;
+    display: flex;
+    gap: 20px; /* Adiciona espaçamento entre os links */
+    margin-right: 120px;
+}
+
+.main-nav ul li {
+    margin-left: 1.5rem;
+    text-align: center;
+}
+
+.main-nav a {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.main-nav a:hover {
+    text-decoration: underline;
+    color: none;
+    font-weight: bold;
+}
+
+.btn-agendar {
+    background: #007bff;
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+}
+
+/* --- Seção Principal --- */
+.hero-section {
+    background-color: #007bff;
+    color: #fff;
+    text-align: center;
+    padding: 5rem 1rem;
+}
+
+.hero-content h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.hero-content p {
+    font-size: 1.2rem;
+}
+
+.btn-agendar-hero {
+    display: inline-block;
+    background: #00c46b;
+    color: #fff;
+    padding: 1rem 2rem;
+    border-radius: 5px;
+    margin-top: 1.5rem;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background 0.3s ease;
+}
+
+.btn-agendar-hero:hover {
+    background: #009953;
+}
+
+/* --- Seções de Conteúdo --- */
+section {
+    padding: 3rem 1rem;
+    text-align: center;
+}
+
+.protocolo-section {
+    background: #fff;
+}
+
+.beneficios-section {
+    background: #f9f9f9;
+}
+
+.beneficios-grid {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.beneficio-item {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    width: 300px;
+}
+
+/* --- Seção de Agendamento --- */
+.agendamento-section {
+    background: #007bff;
+    color: #fff;
+}
+
+.agendamento-form input {
+    width: 100%;
+    padding: 0.8rem;
+    margin-bottom: 1rem;
+    border: none;
+    border-radius: 5px;
+}
+
+.btn-enviar {
+    background: #00c46b;
+    color: #fff;
+    padding: 0.8rem 2rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background 0.3s ease;
+}
+
+.btn-enviar:hover {
+    background: #009953;
+}
+
+
+
+/*LOGO*/
+.logo-fisio {
+    max-width: 150px;
+    height: auto;    
+    width: 150px;   
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 20px;
+    border-radius: 10px; 
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.main-header .logo-fisio {
+    margin-bottom: 0; 
+    margin-left: 0;   
+    margin-right: 15px; 
+    max-width: 100px;
+}
+
+/*/
+
+/* --- Seção de Benefícios da Fisioterapia --- */
+.beneficios-fisio-section {
+    background-color: #fff; /* Fundo branco para dar um ar mais limpo */
+    padding: 6rem 1rem;
+    text-align: center;
+}
+
+.beneficios-fisio-section h2 {
+    font-size: 2.8rem;
+    color: #1a237e; /* Azul escuro, cor mais profissional */
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.beneficios-fisio-section p {
+    font-size: 1.1rem;
+    color: #555;
+    max-width: 800px;
+    margin: 0 auto 3rem;
+    line-height: 1.7;
+}
+
+.beneficios-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    justify-content: center;
+}
+
+.beneficio-item-fisio {
+    background-color: #f9f9f9; /* Um cinza claro para as caixas */
+    padding: 2.5rem;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-align: left;
+}
+
+.beneficio-item-fisio:hover {
+    transform: translateY(-10px); /* Efeito de elevação ao passar o mouse */
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+}
+
+.beneficio-item-fisio h3 {
+    font-size: 1.5rem;
+    color: #132d53; /* Azul vibrante */
+    margin-bottom: 1rem;
+    position: relative; /* Para usar o pseudo-elemento abaixo */
+    padding-left: 25px;
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* Adiciona uma barra vertical ao lado do título do card */
+.beneficio-item-fisio h3::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 5px;
+    height: 100%;
+    /* background-color: #007bff; */
+    border-radius: 2px;
+}
+
+.beneficio-item-fisio p {
+    color: #777;
+    margin-bottom: 0;
+    text-align: center;
+}
+
+.beneficio-icone {
+    width: 250px;
+    align-items: center;
+    display: block;
+    margin: 0 auto;
+    border-radius: 50%;
+}
+
+/*/
