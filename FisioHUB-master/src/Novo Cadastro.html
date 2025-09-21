@@ -2,16 +2,21 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="cadastro_paciente.css">
-    <title>Login</title>
+    <link rel="stylesheet" href="Novo Cadastro.css">
+    <title>Novo Cadastro</title>
 </head>
 <body>
 
     <form action="processar_cadastro.php" method="POST">
         <div class="wra">
             <div clases="From-box">
-                <h1>Login</h1>
-                <form action="#">
+                <h1>Nova Conta</h1>
+                <form action="#"> 
+                    <div class="input">
+                        <span class="icon"><ion-icon name="person"></ion-icon></span>
+                        <input type="email" required>
+                        <label>Email</label>
+                    </div>  
                     <div class="input">
                         <span class="icon"><ion-icon name="mail"></ion-icon></span>
                         <input type="email" required>
@@ -23,13 +28,10 @@
                     </div>
                     <div class="remember-forgot">
                         <label><input type="Checkbox">Lembre-me</label>
-                        <a href="#">Esqueceu a Senha?</a>
+
                     </div>
-                    <button type="submit" class="btn">Login</button>
-                    <div class="Login-registrado">
-                        <p>Não tem uma conta?<a href="Novo Cadastro.html" class="register-link">Criar uma conta nova</a></p>
-                    </div>
-                
+                    <button type="submit" class="btn">Criar Conta</button>
+
                 </form>
             </div>
 
