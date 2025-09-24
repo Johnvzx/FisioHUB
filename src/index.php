@@ -23,8 +23,9 @@ try {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vittalis</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/media.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="media.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" type="image/x-icon" href="img/vittalis.png">
     
 </head>
@@ -36,18 +37,23 @@ try {
 
         <nav class="main-nav">
             <ul class="nav-links">
-                <li><a href="#">PRINCIPAL</a></li>
-                <li><a href="#servicos">SERVIÇOS</a></li>
-                <li><a href="#profissionais">PROFISSIONAIS</a></li>
-                <li><a href="#blog">BLOG</a></li>
+                <li><a href="">PLANOS</a></li>
+                <li><a href="">SERVIÇOS</a></li>
+                <li><a href="">PROFISSIONAIS</a></li>
+                <li><a href="">SOBRE NÓS</a></li>
             </ul>
         </nav>
 
-        <div class="contact-button">
-            <a class="cta-button" href="" target="_blank">ENTRE EM CONTATO</a>
+        <div class="actions">
+            <a class="lgn-button" href="cadastro_paciente.html">
+                <i class="fas fa-user"></i>
+            </a>
+            <a class="cta-button" href="">
+                <i class="fas fa-envelope"></i>
+            </a>
         </div>
 
-    </div>
+</div>
 </header>
 
     <main>
@@ -104,6 +110,6 @@ try {
         <p>&copy; 2024 Meu Site. Todos os direitos reservados.</p>
     </footer>
 
-    <script src="js/script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>

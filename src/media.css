@@ -1,0 +1,47 @@
+/* --- Media Queries para Telas de Celular (Smartphones) --- */
+@media (max-width: 768px) {
+    /* Ajustes no Header e Navbar */
+    .main-header {
+        flex-direction: column;
+        align-items: center;
+        padding: 1rem;
+    }
+
+    .main-nav {
+        margin-top: 10px;
+    }
+
+    .main-nav ul {
+        flex-direction: column;
+        align-items: center;
+        margin-right: 0px;
+    }
+
+    .main-nav ul li {
+        margin: 5px 0;
+        text-decoration: underline;
+        color: white !important;
+    }
+
+    .main-nav ul li a {
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+/* --- Media Queries para Mobile --- */
+@media (max-width: 768px) {
+    .header-container {
+        flex-direction: column;
+        align-items: center;
+        gap: 15px; /* Espaço entre os elementos */
+    }
+}
+
+    .main-nav {
+        order: 2; /* Coloca a navegação abaixo do logo e do botão */
+    }
+
+    
+
+}
