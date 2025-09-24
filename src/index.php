@@ -46,10 +46,10 @@ try {
 
         <div class="actions">
             <a class="lgn-button" href="cadastro_paciente.html">
-                <i class="fas fa-user"></i>
+                <i class="fas fa-user">LOGIN</i>
             </a>
             <a class="cta-button" href="">
-                <i class="fas fa-envelope"></i>
+                <i class="fas fa-envelope">ENTRE EM CONTATO</i>
             </a>
         </div>
 

@@ -193,16 +193,22 @@ section {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 40px;   
+    width: 120px;   
     height: 40px;  
-    background-color: red;
+    background-color: white;
     border-radius: 6px;
-    color: #0d3b66;     
-    font-size: 18px;     
+    color: black;     
+    font-size: 14px;     
     margin-left: 10px;
     text-decoration: none;
     transition: 0.3s;
 }
+
+.fa-user::before {
+  content: "\f007";
+  margin: 10px;
+}
+
 
 .actions a:hover {
     background: #0d3b66;
@@ -216,4 +222,13 @@ section {
     text-decoration: none;
     font-weight: bold;
 }
+
+.actions .cta-button {
+    padding: 8px 15px;
+    border-radius: 5px;
+    color: black;
+    text-decoration: none;
+    font-weight: bold;
+}
+
 /*/
