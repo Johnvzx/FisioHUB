@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agendar Consulta - Vittalis</title>
+    <link rel="stylesheet" href="/src/css/agendar.css">
+
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">🏥 Vittalis</div>
+            <h2>Agendamento de Consulta</h2>
+            <p>Preencha o formulário abaixo para agendar sua consulta</p>
+        </div>
+
+        <form id="appointment-form">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="name">Nome Completo <span class="required">*</span></label>
+                    <input type="text" id="name" name="name" required placeholder="Seu nome completo">
+                </div>
+
+                <div class="form-group">
+                    <label for="email">E-mail <span class="required">*</span></label>
+                    <input type="email" id="email" name="email" required placeholder="seu@email.com">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="phone">Telefone <span class="required">*</span></label>
+                    <input type="tel" id="phone" name="phone" required placeholder="(00) 00000-0000">
+                </div>
+
+                <div class="form-group">
+                    <label for="service">Serviço de Interesse <span class="required">*</span></label>
+                    <select id="service" name="service" required>
+                        <option value="">Selecione o serviço</option>
+                        <option value="Fisioterapia Ortopédica">Fisioterapia Ortopédica</option>
+                        <option value="Pilates Clínico">Pilates Clínico</option>
+                        <option value="Fisioterapia Neurológica">Fisioterapia Neurológica</option>
+                        <option value="Fisioterapia Pélvica">Fisioterapia Pélvica</option>
+                        <option value="Fisioterapia Esportiva">Fisioterapia Esportiva</option>
+                        <option value="Fisioterapia Geriátrica">Fisioterapia Geriátrica</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group full-width">
+                <label for="professional_id">Profissional de Preferência <span class="required">*</span></label>
+                <select id="professional_id" name="professional_id" required>
+                    <option value="">Carregando profissionais...</option>
+                </select>
+            </div>
+
+            <div class="form-group full-width">
+                <label for="message">Mensagem / Observações</label>
+                <textarea id="message" name="message" placeholder="Descreva brevemente seu caso, dúvidas ou preferências de horário"></textarea>
+            </div>
+
+            <button type="submit" class="submit-btn" id="submit-btn">
+                Agendar Consulta
+            </button>
+            
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>Processando seu agendamento...</p>
+            </div>
+        </form>
+
+        <div class="footer">
+            <a href="/src/index.html">← Voltar ao site</a>
+            <a href="/src/login.html">Fazer login</a>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="/src/js/agendar.js"></script>
+    
+</body>
+</html>
