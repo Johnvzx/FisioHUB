@@ -1,5 +1,4 @@
 <?php
-// Atualiza senha do admin_test@example.com para 'Admin@123' gerando um hash seguro
 $dbHost = getenv('MYSQL_HOST') ?: 'db';
 $dbName = getenv('MYSQL_DATABASE') ?: 'mydatabase';
 $dbUser = getenv('MYSQL_USER') ?: 'root';

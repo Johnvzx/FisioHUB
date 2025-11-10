@@ -1,5 +1,9 @@
 <?php
 session_start();
+
+// Renovar atividade da sessão
+$_SESSION['LAST_ACTIVITY'] = time();
+
 header('Content-Type: application/json; charset=utf-8');
 
 $action = $_POST['action'] ?? '';
@@ -27,7 +31,6 @@ try {
     exit;
 }
 
-// Ensure appointments table exists (helpful if migrations/init.sql wasn't executed)
 try {
     $pdo->exec("CREATE TABLE IF NOT EXISTS appointments (
         id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -39,15 +42,12 @@ try {
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;");
 } catch (Exception $e) {
-    // if creation fails, continue; other parts of the code handle missing table gracefully
 }
 
-// Ensure professional link column on appointments
 try {
     $pdo->exec("ALTER TABLE appointments ADD COLUMN professional_id INT UNSIGNED NULL AFTER id");
     $pdo->exec("CREATE INDEX idx_appointments_professional_id ON appointments (professional_id)");
 } catch (Exception $e) {
-    // column/index might already exist
 }
 
 $method = $_SERVER['REQUEST_METHOD'];
@@ -55,16 +55,13 @@ $method = $_SERVER['REQUEST_METHOD'];
 if ($method === 'GET') {
     $users = $pdo->query('SELECT id, name, email, role, created_at FROM users ORDER BY id DESC')->fetchAll();
     
-    // Add specialty column if it doesn't exist
     try {
         $pdo->exec("ALTER TABLE professionals ADD COLUMN specialty VARCHAR(150) DEFAULT NULL");
     } catch (Exception $e) {
-        // Column might already exist, ignore
     }
     
     $profs = $pdo->query('SELECT id, name, email, specialty, created_at FROM professionals ORDER BY id DESC')->fetchAll();
     $admins = $pdo->query('SELECT id, name, email, created_at FROM users WHERE role = "admin" ORDER BY id DESC')->fetchAll();
-    // carregar agendamentos (se existir a tabela)
     try {
         $appts = $pdo->query('SELECT id, professional_id, name, email, phone, service, message, created_at FROM appointments ORDER BY id DESC')->fetchAll();
     } catch (Exception $e) {
@@ -90,7 +87,6 @@ try {
         
         if ($name === '' || $email === '' || $password === '') throw new Exception('Dados incompletos');
         
-        // If creating a professional, specialty is required
         if ($role === 'professional' && $specialty === '') {
             throw new Exception('Especialidade é obrigatória para profissionais');
         }
@@ -98,19 +94,16 @@ try {
         $hash = password_hash($password, PASSWORD_DEFAULT);
         
         try {
-            // If role is professional, add directly to professionals table
             if ($role === 'professional') {
                 $stmt = $pdo->prepare('INSERT INTO professionals (name,email,password_hash,specialty,created_at) VALUES (?,?,?,?,NOW())');
                 $stmt->execute([$name, $email, $hash, $specialty]);
             } else {
-                // Otherwise add to users table with role
                 $stmt = $pdo->prepare('INSERT INTO users (name,email,password_hash,role,created_at) VALUES (?,?,?,?,NOW())');
                 $stmt->execute([$name, $email, $hash, $role]);
             }
             echo json_encode(['ok' => true, 'id' => $pdo->lastInsertId()]);
             exit;
         } catch (PDOException $pe) {
-            // Duplicate entry (unique email) -> MySQL error code 1062
             $sqlState = $pe->errorInfo[1] ?? null;
             if ($sqlState == 1062) {
                 echo json_encode(['error' => 'duplicate_email', 'message' => 'E-mail já cadastrado']);
@@ -184,7 +177,6 @@ try {
         exit;
     }
 
-    // Editar profissional
     if ($action === 'edit_professional') {
         $id = intval($_POST['id'] ?? 0);
         $name = trim($_POST['name'] ?? '');
@@ -198,12 +190,10 @@ try {
         
         try {
             if ($password !== '') {
-                // Update with new password
                 $hash = password_hash($password, PASSWORD_DEFAULT);
                 $stmt = $pdo->prepare('UPDATE professionals SET name = ?, email = ?, specialty = ?, password_hash = ? WHERE id = ?');
                 $stmt->execute([$name, $email, $specialty, $hash, $id]);
             } else {
-                // Update without changing password
                 $stmt = $pdo->prepare('UPDATE professionals SET name = ?, email = ?, specialty = ? WHERE id = ?');
                 $stmt->execute([$name, $email, $specialty, $id]);
             }
@@ -219,7 +209,6 @@ try {
         }
     }
 
-    // Editar administrador
 if ($action === 'edit_admin') {
         $id = intval($_POST['id'] ?? 0);
         $name = trim($_POST['name'] ?? '');
@@ -231,12 +220,10 @@ if ($action === 'edit_admin') {
         
         try {
             if ($password !== '') {
-                // Update with new password
                 $hash = password_hash($password, PASSWORD_DEFAULT);
                 $stmt = $pdo->prepare('UPDATE users SET name = ?, email = ?, password_hash = ? WHERE id = ?');
                 $stmt->execute([$name, $email, $hash, $id]);
             } else {
-                // Update without changing password
                 $stmt = $pdo->prepare('UPDATE users SET name = ?, email = ? WHERE id = ?');
                 $stmt->execute([$name, $email, $id]);
             }
@@ -260,13 +247,11 @@ if ($action === 'create_appointment') {
         $message = trim($_POST['message'] ?? '');
         $professionalId = isset($_POST['professional_id']) && $_POST['professional_id'] !== '' ? intval($_POST['professional_id']) : null;
         
-        // Log para debug (remover em produção)
         error_log("📝 Create appointment - professional_id recebido: " . ($_POST['professional_id'] ?? 'não enviado'));
         error_log("📝 professional_id processado: " . ($professionalId ?? 'null'));
         
         if ($name === '' || $email === '') throw new Exception('Dados incompletos');
         
-        // Build dynamic insert with/without professional_id
         if ($professionalId !== null && $professionalId > 0) {
             $stmt = $pdo->prepare('INSERT INTO appointments (professional_id, name, email, phone, service, message, created_at) VALUES (?,?,?,?,?,?,NOW())');
             $stmt->execute([$professionalId, $name, $email, $phone, $service, $message]);
@@ -278,7 +263,6 @@ if ($action === 'create_appointment') {
         exit;
     }
 
-    // Deletar agendamento
     if ($action === 'delete_appointment') {
         $id = intval($_POST['id'] ?? 0);
         if ($id <= 0) throw new Exception('id inválido');

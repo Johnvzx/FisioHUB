@@ -15,25 +15,24 @@ async function loadLists() {
         if (!r.ok) throw new Error('API indisponível');
         const data = await r.json();
         
-        console.log('Data loaded:', data); // Debug
-        console.log('Professionals:', data.professionals); // Debug
+        console.log('Data loaded:', data);
+        console.log('Professionals:', data.professionals);
         
         document.getElementById('total-users').textContent = (data.users || []).length;
         document.getElementById('total-appointments').textContent = (data.appointments || []).length;
         document.getElementById('total-professionals').textContent = (data.professionals || []).length;
         document.getElementById('total-admins').textContent = (data.admins || []).length;
         
-        renderUsers(data.users || []);
+    renderUsers(data.users || []);
         renderAdmins(data.admins || []);
         renderProfs(data.professionals || []);
         renderAppointments(data.appointments || [], data.professionals || []);
         
-        // Populate professional select in appointment form
         const profSelect = document.getElementById('appt-professional-select');
-        console.log('Professional select element:', profSelect); // Debug
+        console.log('Professional select element:', profSelect);
         if (profSelect) {
             const professionals = data.professionals || [];
-            console.log('Populating with professionals:', professionals); // Debug
+            console.log('Populating with professionals:', professionals);
             
             if (professionals.length === 0) {
                 profSelect.innerHTML = '<option value="">Nenhum profissional cadastrado</option>';
@@ -44,17 +43,52 @@ async function loadLists() {
                     opt.value = p.id;
                     opt.textContent = `${p.name}${p.specialty ? ' - ' + p.specialty : ''}`;
                     profSelect.appendChild(opt);
-                    console.log('Added professional:', p.name, p.id); // Debug
+                    console.log('Added professional:', p.name, p.id);
                 });
             }
         } else {
-            console.error('Professional select not found!'); // Debug
+            console.error('Profissional selecionado não encontrado!');
         }
         
         document.getElementById('users-wrap').textContent = '';
         document.getElementById('admins-wrap').textContent = '';
         document.getElementById('profs-wrap').textContent = '';
         document.getElementById('appts-wrap').textContent = '';
+
+        // Avisos amigáveis quando listas estão vazias
+        try {
+            const users = data.users || [];
+            const profs = data.professionals || [];
+            const appts = data.appointments || [];
+            const admins = data.admins || [];
+            if (window.Swal) {
+                if (users.length === 0) {
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'Nenhum usuário cadastrado',
+                        text: 'Crie o primeiro usuário no bloco "Gerenciar Usuários".',
+                        timer: 2200,
+                        showConfirmButton: false
+                    });
+                } else if (profs.length === 0) {
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'Nenhum profissional cadastrado',
+                        text: 'Você pode promover um usuário para profissional.',
+                        timer: 2200,
+                        showConfirmButton: false
+                    });
+                } else if (appts.length === 0) {
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'Sem agendamentos ainda',
+                        text: 'Crie ou importe agendamentos para começar.',
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+                }
+            }
+        } catch(e) { /* ignore */ }
     } catch (err) {
         console.error('Error loading data:', err);
         document.getElementById('users-wrap').innerHTML = '<div class="loading">⚠️ Erro ao carregar dados</div>';
@@ -563,19 +597,59 @@ function confirmAction(act) {
     return confirm(msgs[act] || 'Confirmar ação?');
 }
 
+// Keep-alive: mantém sessão ativa enquanto aba estiver aberta
+let keepAliveInterval;
+let currentUserId = null;
+
+function startKeepAlive() {
+    // Enviar keep-alive imediatamente
+    sendKeepAlive();
+    // Depois enviar a cada 1 minuto (60 segundos)
+    keepAliveInterval = setInterval(sendKeepAlive, 60000);
+}
+
+async function sendKeepAlive() {
+    try {
+        const response = await fetch('/src/keep_alive.php', { 
+            method: 'GET',
+            cache: 'no-cache'
+        });
+        const data = await response.json();
+        if (!data.ok) {
+            console.warn('Sessão expirada, redirecionando...');
+            clearInterval(keepAliveInterval);
+            window.location.href = '/src/login.html?error=session_expired';
+        } else {
+            console.log('Keep-alive OK:', new Date().toLocaleTimeString());
+            // Verificar se o usuário mudou (login em outra aba)
+            if (currentUserId === null) {
+                currentUserId = data.user_id;
+            } else if (data.user_id && data.user_id !== currentUserId) {
+                // Usuário mudou! Recarregar a página para redirecionar corretamente
+                console.warn('Conta alterada, redirecionando...');
+                clearInterval(keepAliveInterval);
+                window.location.reload();
+            }
+        }
+    } catch (e) {
+        console.error('Erro no keep-alive:', e);
+    }
+}
+
+// Parar keep-alive ao sair da página
+window.addEventListener('beforeunload', () => {
+    if (keepAliveInterval) clearInterval(keepAliveInterval);
+});
+
 document.addEventListener('DOMContentLoaded', function() {
     console.log('DOM Content Loaded - Initializing admin dashboard...');
-    const profSelect = document.getElementById('appt-professional-select');
-    console.log('Professional select on DOM ready:', profSelect);
-    if (!profSelect) {
-        console.error('CRITICAL: Professional select not found on DOM ready!');
-    } else {
-        console.log('Professional select found, loading data...');
-    }
-    
+    const loader = document.getElementById('global-loader');
+    function hideLoader(){ if (loader) loader.style.opacity = '0'; setTimeout(()=>{ if(loader) loader.style.display='none'; },400); }
     // Carregar dados
-    loadLists();
+    loadLists().finally(()=>{ hideLoader(); });
     initTableSearch();
+    // Iniciar keep-alive
+    startKeepAlive();
 });
 
     document.querySelectorAll('.nav-link').forEach(link => {

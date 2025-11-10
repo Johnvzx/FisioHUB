@@ -1,5 +1,4 @@
 <?php
-// Endpoint de desenvolvimento: retorna JSON com usuários (sem password)
 session_start();
 if (!isset($_SESSION['user_id']) || ($_SESSION['user_role'] ?? '') !== 'admin') {
     http_response_code(401);

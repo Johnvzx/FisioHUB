@@ -1,5 +1,4 @@
 <?php
-// Simple endpoint to expose current session role for client-side redirects
 session_start();
 header('Content-Type: application/json; charset=utf-8');
 

@@ -25,10 +25,16 @@ if (!$email || !$password) {
     exit;
 }
 
-$stmt = $pdo->prepare('SELECT id FROM users WHERE email = ? LIMIT 1');
-$stmt->execute([$email]);
-if ($stmt->fetch()) {
-    header('Location: /src/login.html');
+// Verifica se o email já existe em users ou professionals
+$check = $pdo->prepare('(
+    SELECT id FROM users WHERE email = ? LIMIT 1
+) UNION (
+    SELECT id FROM professionals WHERE email = ? LIMIT 1
+) LIMIT 1');
+$check->execute([$email, $email]);
+if ($check->fetch()) {
+    // Redireciona de volta ao login, abrindo o painel de cadastro e exibindo mensagem
+    header('Location: /src/login.html?panel=register&error=email_exists');
     exit;
 }
 
@@ -62,7 +68,6 @@ $_SESSION['user_role'] = $role;
         <p>Olá, <strong><?= htmlspecialchars($name ?: 'usuário') ?></strong>. Sua conta foi criada e você já está logado.</p>
         <p>Pode continuar quando quiser para o painel ou permanecer nesta página.</p>
         <p>
-            <a class="btn" href="/src/dashboard.php">Ir para o painel</a>
             <a class="btn btn-secondary" href="/src/logout.php">Sair</a>
         </p>
     </div>

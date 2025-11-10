@@ -150,7 +150,6 @@ try {
     
     if (result && result.ok) {
         console.log('✅ Agendamento criado com sucesso!');
-        // Sucesso! Verificar se está logado como profissional
         try {
             const sessionRes = await fetch('/src/session_info.php');
             const sessionInfo = await sessionRes.json();
@@ -158,7 +157,6 @@ try {
             
             if (sessionInfo && sessionInfo.loggedIn) {
                 if (sessionInfo.role === 'professional') {
-                    // Se é o profissional, redirecionar para seu dashboard
                     console.log('🔄 Redirecionando para dashboard do profissional...');
                     if (window.Swal) {
                         Swal.fire({
@@ -232,7 +230,6 @@ try {
 }
 });
 });
-
 
 setTimeout(function() {
     const select = document.getElementById('professional_id');

@@ -1,5 +1,4 @@
 <?php
-// Endpoint público para listar profissionais (sem autenticação)
 
 $dbHost = getenv('MYSQL_HOST') ?: 'db';
 $dbName = getenv('MYSQL_DATABASE') ?: 'mydatabase';
@@ -40,6 +39,5 @@ if (($_GET['format'] ?? '') === 'js') {
     exit;
 }
 
-// Padrão: JSON
 header('Content-Type: application/json; charset=utf-8');
 echo json_encode(['ok' => true, 'professionals' => $professionals]);

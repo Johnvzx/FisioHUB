@@ -184,23 +184,23 @@ window.addEventListener('load', function() {
 });
 
 document.addEventListener("DOMContentLoaded", function() {
-            const form = document.getElementById("appointment-form");
-            const loading = document.getElementById("loading");
-            const submitBtn = document.getElementById("submit-btn");
-
-            form.addEventListener("submit", function(event) {
-                event.preventDefault();
-                loading.classList.add("active");
-                submitBtn.disabled = true;
-
-                setTimeout(() => {
-                    loading.classList.remove("active");
-                    submitBtn.disabled = false;
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Agendamento realizado!',
-                        text: 'Sua consulta foi agendada com sucesso.',
-                    });
-                }, 2000);
+    const form = document.getElementById("appointment-form");
+    const loading = document.getElementById("loading");
+    const submitBtn = document.getElementById("submit-btn");
+    
+    form.addEventListener("submit", function(event) {
+        event.preventDefault();
+        loading.classList.add("active");
+        submitBtn.disabled = true;
+        
+        setTimeout(() => {
+            loading.classList.remove("active");
+            submitBtn.disabled = false;
+            Swal.fire({
+                icon: 'success',
+                title: 'Agendamento realizado!',
+                text: 'Sua consulta foi agendada com sucesso.',
             });
-        });
+        }, 2000);
+    });
+});
