@@ -1,18 +1,12 @@
 <?php
 session_start();
-
-// Atualizar timestamp de atividade
 $_SESSION['LAST_ACTIVITY'] = time();
-
-// Verificar se a sessão pertence a este tipo de usuário
 if (!isset($_SESSION['user_id'])) {
   header('Location: /src/login.html');
   exit;
 }
 
-// Se o usuário atual não é do tipo 'user', redirecionar
 if (($_SESSION['user_role'] ?? '') !== 'user') {
-  // Conta foi trocada, redirecionar para o dashboard correto
   $role = $_SESSION['user_role'] ?? '';
   if ($role === 'professional') {
     header('Location: /src/professional_dashboard.php');
@@ -76,7 +70,7 @@ if (($_SESSION['user_role'] ?? '') !== 'user') {
       </div>
     </div>
 
-    <!-- Appointments -->
+    <!-- Agendamento -->
     <div class="card">
       <div class="card-header">
         <h2 class="card-title">

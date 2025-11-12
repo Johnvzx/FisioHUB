@@ -1,9 +1,6 @@
 <?php
 session_start();
-
-// Renovar atividade da sessão
 $_SESSION['LAST_ACTIVITY'] = time();
-
 header('Content-Type: application/json; charset=utf-8');
 
 if (!isset($_SESSION['user_id']) || ($_SESSION['user_role'] ?? '') !== 'user') {
@@ -25,8 +22,6 @@ try {
 
   if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $userId = $_SESSION['user_id'];
-    
-    // Buscar email do usuário na tabela users
     $stmt = $pdo->prepare("SELECT email, name FROM users WHERE id = ?");
     $stmt->execute([$userId]);
     $user = $stmt->fetch();
@@ -78,7 +73,6 @@ try {
     exit;
   }
 
-  // Método não permitido
   http_response_code(405);
   echo json_encode(['ok' => false, 'message' => 'Método não permitido']);
 

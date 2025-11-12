@@ -1,5 +1,4 @@
 <?php
-
 session_start();
 
 $dbHost = getenv('MYSQL_HOST') ?: 'db';
@@ -25,7 +24,6 @@ if (!$email || !$password) {
     exit;
 }
 
-// Verifica se o email já existe em users ou professionals
 $check = $pdo->prepare('(
     SELECT id FROM users WHERE email = ? LIMIT 1
 ) UNION (
@@ -33,7 +31,6 @@ $check = $pdo->prepare('(
 ) LIMIT 1');
 $check->execute([$email, $email]);
 if ($check->fetch()) {
-    // Redireciona de volta ao login, abrindo o painel de cadastro e exibindo mensagem
     header('Location: /src/login.html?panel=register&error=email_exists');
     exit;
 }
@@ -55,17 +52,41 @@ $_SESSION['user_role'] = $role;
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Cadastro realizado</title>
-    <style>
-        body{font-family:Arial,Helvetica,sans-serif;display:flex;align-items:center;justify-content:center;height:100vh;background:#f5f7fb}
-        .card{background:#fff;padding:24px;border-radius:8px;box-shadow:0 6px 18px rgba(0,0,0,.08);max-width:420px;text-align:center}
-        .btn{display:inline-block;margin-top:16px;padding:10px 18px;border-radius:6px;background:#2c5282;color:#fff;text-decoration:none}
-        .btn-secondary{background:#6b7280}
-    </style>
+<style>
+    body{
+        font-family:Arial,Helvetica,sans-serif;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        height:100vh;
+        background:#f5f7fb
+    }
+    .card{
+        background:#fff;
+        padding:24px;
+        border-radius:8px;
+        box-shadow:0 6px 18px rgba(0,0,0,.08);
+        max-width:420px;
+        text-align:center
+    }
+    .btn{
+        display:inline-block;
+        margin-top:16px;
+        padding:10px 18px;
+        border-radius:6px;
+        background:#2c5282;
+        color:#fff;
+        text-decoration:none
+    }
+    .btn-secondary{
+        background:#6b7280
+    }
+</style>
 </head>
 <body>
     <div class="card">
         <h2>Conta criada e login efetuado</h2>
-        <p>Olá, <strong><?= htmlspecialchars($name ?: 'usuário') ?></strong>. Sua conta foi criada e você já está logado.</p>
+            <p>Olá, <strong><?= htmlspecialchars($name ?: 'usuário') ?></strong>. Sua conta foi criada e você já está logado.</p>
         <p>Pode continuar quando quiser para o painel ou permanecer nesta página.</p>
         <p>
             <a class="btn btn-secondary" href="/src/logout.php">Sair</a>

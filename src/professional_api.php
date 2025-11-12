@@ -1,9 +1,6 @@
 <?php
 session_start();
-
-// Renovar atividade da sessão
 $_SESSION['LAST_ACTIVITY'] = time();
-
 header('Content-Type: application/json; charset=utf-8');
 
 if (!isset($_SESSION['user_id']) || ($_SESSION['user_role'] ?? '') !== 'professional') {
@@ -13,7 +10,6 @@ if (!isset($_SESSION['user_id']) || ($_SESSION['user_role'] ?? '') !== 'professi
 }
 
 $profId = intval($_SESSION['user_id']);
-
 $dbHost = getenv('MYSQL_HOST') ?: 'db';
 $dbName = getenv('MYSQL_DATABASE') ?: 'mydatabase';
 $dbUser = getenv('MYSQL_USER') ?: 'root';
@@ -32,26 +28,23 @@ try {
 
 try {
     $pdo->exec("ALTER TABLE professionals ADD COLUMN specialty VARCHAR(150) DEFAULT NULL");
-} catch (Exception $e) { /* ignore */ }
+} catch (Exception $e) {}
 
 try {
     $pdo->exec("ALTER TABLE appointments ADD COLUMN professional_id INT UNSIGNED NULL AFTER id");
     $pdo->exec("CREATE INDEX idx_appointments_professional_id ON appointments (professional_id)");
-} catch (Exception $e) { /* ignore */ }
+} catch (Exception $e) {}
 
 $method = $_SERVER['REQUEST_METHOD'];
 
 if ($method === 'GET') {
-    // Log para debug
-    error_log("🔍 Professional API GET - profId: " . $profId);
-    
+    error_log("🔍 Professional API GET - profId: " . $profId);    
     $profileStmt = $pdo->prepare('SELECT id, name, email, specialty, created_at FROM professionals WHERE id = ? LIMIT 1');
     $profileStmt->execute([$profId]);
     $profile = $profileStmt->fetch() ?: [];
     
     error_log("👤 Profile encontrado: " . json_encode($profile));
 
-    // Lista de agendamentos do profissional logado
     try {
         $stmt = $pdo->prepare('SELECT id, professional_id, name, email, phone, service, message, created_at, appointment_date, appointment_time, price, status FROM appointments WHERE professional_id = ? ORDER BY id DESC');
         $stmt->execute([$profId]);
@@ -85,8 +78,6 @@ try {
         $password = trim($_POST['password'] ?? '');
 
         if ($name === '' || $email === '') throw new Exception('Nome e email são obrigatórios');
-
-        // Verificar se email já existe em outro profissional
         $chk = $pdo->prepare('SELECT id FROM professionals WHERE email = ? AND id <> ? LIMIT 1');
         $chk->execute([$email, $profId]);
         if ($chk->fetch()) throw new Exception('E-mail já cadastrado');
@@ -100,7 +91,6 @@ try {
             $stmt->execute([$name, $email, $specialty, $profId]);
         }
 
-        // Atualiza nome da sessão se alterado
         $_SESSION['user_name'] = $name;
         echo json_encode(['ok' => true]);
         exit;
@@ -114,7 +104,7 @@ try {
             echo json_encode(['error' => 'invalid_input', 'message' => 'Dados inválidos']);
             exit;
         }
-        // Normalizar para stored values
+
         $map = [
             'pendente' => 'pending',
             'confirmada' => 'confirmed',

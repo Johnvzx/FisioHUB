@@ -23,7 +23,6 @@ if (!$email || !$password) {
     exit;
 }
 
-// Permite forçar o tipo de login (ex.: formulário separado para profissionais)
 $loginAs = strtolower(trim($_POST['login_as'] ?? ''));
 
 // Preparar consultas
@@ -66,11 +65,9 @@ $authUser = function() use ($userStmt, $email, $password) {
 // Ordem de autenticação: por padrão prioriza usuário/admin; se login_as=professional, prioriza profissional
 if ($loginAs === 'professional') {
     if ($authProfessional() !== false) { /* redirected */ }
-    // fallback: tentar como usuário
     if ($authUser() !== false) { /* redirected */ }
 } else {
     if ($authUser() !== false) { /* redirected */ }
-    // fallback: tentar como profissional
     if ($authProfessional() !== false) { /* redirected */ }
 }
 

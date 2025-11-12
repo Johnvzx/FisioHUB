@@ -4,7 +4,9 @@ $dbName = getenv('MYSQL_DATABASE') ?: 'mydatabase';
 $dbUser = getenv('MYSQL_USER') ?: 'root';
 $dbPass = getenv('MYSQL_PASSWORD') ?: 'mypassword';
 try {
-    $pdo = new PDO("mysql:host=$dbHost;dbname=$dbName;charset=utf8mb4", $dbUser, $dbPass, [
+    $pdo = new PDO("mysql:host=$dbHost;
+                    dbname=$dbName;
+                    charset=utf8mb4", $dbUser, $dbPass, [
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
         PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
     ]);
